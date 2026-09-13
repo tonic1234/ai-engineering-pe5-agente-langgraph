@@ -1,6 +1,6 @@
 """agent.py — Grafo ReAct con LangGraph y memoria persistente.
 
-APUNTE DE CLASE (el corazón de la pre-entrega):
+APUNTE (el corazón del agente):
 El agente es un grafo de dos nodos que se repiten:
     modelo -> (¿pidió una herramienta?) -> herramientas -> modelo -> ... -> fin
 

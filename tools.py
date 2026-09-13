@@ -1,6 +1,6 @@
 """tools.py — Herramientas del agente.
 
-APUNTE DE CLASE (esto es lo que más me costó entender):
+APUNTE (lo que más me costó entender):
 El agente NO tiene rutas fijas. El LLM lee el DOCSTRING de cada herramienta y decide
 solo cuál usar según lo que le pidió el usuario. Por eso el profe insistió: si el agente
 no usa la herramienta que esperabas, el problema está en la descripción, no en el grafo.

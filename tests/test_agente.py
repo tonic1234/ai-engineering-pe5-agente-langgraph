@@ -1,6 +1,6 @@
 """tests/test_agente.py — Pruebas de las herramientas y del grafo.
 
-APUNTE: acá se puede probar bastante sin llamar al LLM:
+Nota: acá se puede probar bastante sin llamar al LLM:
   1. Cada herramienta por separado (son funciones puras).
   2. Que el grafo se construya con los nodos que pide la consigna y que la arista
      condicional exista.

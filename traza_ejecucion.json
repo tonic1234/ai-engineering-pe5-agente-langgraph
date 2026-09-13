@@ -1,13 +1,5 @@
 {
-  "respuesta": [
-    {
-      "type": "text",
-      "text": "A continuación, te detallo la información solicitada:\n\n1. **Estado de la orden ORD-1001:**\n   - **Estado:** En preparación\n   - **Cliente:** Acme\n   - **Total:** $1.250\n\n2. **Cálculo de prioridad:**\n   - Para una criticidad **alta** con **3 días de demora**, corresponde **Prioridad P1** (Escalar ahora, SLA de 4 horas).\n\n3. **Fecha de hoy:**\n   - **12 de septiembre de 2026** (17:35 UTC).",
-      "extras": {
-        "signature": "ErEBCq4BARFNMg9r94DGqFeL/ruExrhDBM4iP6Kl9S7h4iuBa6y6XHB4tE4pNTPjZYqi2RLBodFVireDDH7L3hZJoZ/20rygzK+d1yZR3cCXVf3rKnsQjZzmY0uaPpMKPlE9bK5r/2QmoBkHAS45pmJxg7k+5ewL8AqGUYZMLijm0NUO5BZlyQX025OHtLx5IjV+/dWUjsglwFfIUEemfhA5c8dMm1ShGU6/ZM3sIdWt1rp/"
-      }
-    }
-  ],
+  "respuesta": "Aquí tienes la información solicitada:\n\n* **Estado de la orden ORD-1001:** En preparación (Cliente: *Acme*, Total: $1,250).\n* **Prioridad asignada:** **P1** (Escalar ahora, SLA recomendado: 4 horas).\n* **Fecha actual:** 13 de septiembre de 2026 (`2026-09-13T21:19:21 UTC`).",
   "traza": [
     {
       "tipo": "HumanMessage",
@@ -25,8 +17,8 @@
         {
           "nombre": "calcular_prioridad",
           "argumentos": {
-            "criticidad": "alta",
-            "dias_demora": 3
+            "dias_demora": 3,
+            "criticidad": "alta"
           }
         },
         {
@@ -45,19 +37,11 @@
     },
     {
       "tipo": "ToolMessage",
-      "contenido": "2026-09-12T17:35:36+00:00"
+      "contenido": "2026-09-13T21:19:21+00:00"
     },
     {
       "tipo": "AIMessage",
-      "contenido": [
-        {
-          "type": "text",
-          "text": "A continuación, te detallo la información solicitada:\n\n1. **Estado de la orden ORD-1001:**\n   - **Estado:** En preparación\n   - **Cliente:** Acme\n   - **Total:** $1.250\n\n2. **Cálculo de prioridad:**\n   - Para una criticidad **alta** con **3 días de demora**, corresponde **Prioridad P1** (Escalar ahora, SLA de 4 horas).\n\n3. **Fecha de hoy:**\n   - **12 de septiembre de 2026** (17:35 UTC).",
-          "extras": {
-            "signature": "ErEBCq4BARFNMg9r94DGqFeL/ruExrhDBM4iP6Kl9S7h4iuBa6y6XHB4tE4pNTPjZYqi2RLBodFVireDDH7L3hZJoZ/20rygzK+d1yZR3cCXVf3rKnsQjZzmY0uaPpMKPlE9bK5r/2QmoBkHAS45pmJxg7k+5ewL8AqGUYZMLijm0NUO5BZlyQX025OHtLx5IjV+/dWUjsglwFfIUEemfhA5c8dMm1ShGU6/ZM3sIdWt1rp/"
-          }
-        }
-      ]
+      "contenido": "Aquí tienes la información solicitada:\n\n* **Estado de la orden ORD-1001:** En preparación (Cliente: *Acme*, Total: $1,250).\n* **Prioridad asignada:** **P1** (Escalar ahora, SLA recomendado: 4 horas).\n* **Fecha actual:** 13 de septiembre de 2026 (`2026-09-13T21:19:21 UTC`)."
     }
   ]
 }

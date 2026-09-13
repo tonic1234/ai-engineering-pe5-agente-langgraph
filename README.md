@@ -4,7 +4,7 @@ Pre-entrega 5 del curso **AI Engineering** (Coderhouse).
 Agente **ReAct** construido con **LangGraph**: el modelo decide solo qué herramienta usar,
 itera hasta llegar a la conclusión y recuerda la conversación por `thread_id`.
 
-## Qué hay adentro
+## Contenido
 
 | Archivo | Qué hace |
 |---|---|
@@ -55,7 +55,7 @@ La consulta de la demo se puede cambiar con la variable `CONSULTA`.
 El ciclo es: `modelo → herramientas → modelo → …`, hasta que el modelo responde sin pedir
 más herramientas.
 
-## Decisiones de diseño
+## Detalles de implementación
 
 - **Estado**: el grafo hereda de `MessagesState`; el estado se **acumula** (los mensajes se
   suman mediante el reducer), no se reemplaza.
@@ -70,7 +70,7 @@ más herramientas.
 - **Recursion limit**: se define un techo de 10 pasos para evitar bucles infinitos y costos
   inesperados.
 
-## Tests
+## Pruebas
 
 ```bash
 pytest -q
