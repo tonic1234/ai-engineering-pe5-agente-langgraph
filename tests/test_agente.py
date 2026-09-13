@@ -82,3 +82,40 @@ def test_recursion_limit_definido():
     from agent import RECURSION_LIMIT
 
     assert 1 <= RECURSION_LIMIT <= 25
+
+
+# --------------------------------------------------------------------------
+# Fábrica de modelos
+# --------------------------------------------------------------------------
+@pytest.mark.parametrize("provider", ["openai", "anthropic", "gemini"])
+def test_get_model_soporta_los_tres_proveedores(provider):
+    from agent import get_model
+
+    assert get_model(provider=provider) is not None
+
+
+def test_get_model_rechaza_proveedor_desconocido():
+    from agent import get_model
+
+    with pytest.raises(ValueError):
+        get_model(provider="perplexity")
+
+
+def test_el_modelo_queda_enlazado_a_las_herramientas():
+    import os
+
+    os.environ.setdefault("OPENAI_API_KEY", "test-key")
+    from agent import build_llm
+
+    # bind_tools devuelve un runnable que ya conoce las herramientas del agente.
+    modelo = build_llm(provider="openai")
+    assert hasattr(modelo, "ainvoke")
+
+
+def test_normalizacion_del_contenido():
+    # OpenAI/Anthropic devuelven str; Gemini devuelve lista de bloques.
+    from agent import _texto
+
+    assert _texto("hola") == "hola"
+    assert _texto([{"type": "text", "text": "ho"}, {"type": "text", "text": "la"}]) == "hola"
+    assert _texto([{"type": "text", "text": "ok", "extras": {"signature": "xx"}}]) == "ok"

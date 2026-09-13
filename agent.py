@@ -25,7 +25,6 @@ from pathlib import Path
 
 from dotenv import load_dotenv
 from langchain_core.messages import HumanMessage
-from langchain_openai import ChatOpenAI
 from langgraph.checkpoint.sqlite.aio import AsyncSqliteSaver
 from langgraph.graph import END, MessagesState, StateGraph
 from langgraph.prebuilt import ToolNode, tools_condition
@@ -37,15 +36,50 @@ load_dotenv()
 logging.basicConfig(level=logging.INFO, format="%(levelname)s %(name)s: %(message)s")
 logger = logging.getLogger(__name__)
 
+# Modelo por defecto de cada proveedor.
+DEFAULT_MODELS = {
+    "openai": "gpt-4o-mini",
+    "anthropic": "claude-sonnet-4-6",
+    "gemini": "gemini-flash-latest",  # free tier, sin tarjeta
+}
+
 # Límite de pasos: sin esto el agente puede entrar en un bucle y gastar tokens sin parar.
 RECURSION_LIMIT = 10
 CHECKPOINT_DB = Path("./checkpoints.sqlite")
 
 
-def build_llm(model: str = "gpt-4o-mini"):
+def get_model(provider: str | None = None, model: str | None = None, temperature: float = 0.0):
+    """Fábrica de modelos: devuelve el modelo del proveedor pedido.
+
+    Misma idea que en los módulos anteriores: el proveedor se elige por variable de
+    entorno (LLM_PROVIDER), así cambiar de modelo no toca la lógica del grafo.
+    """
+
+    provider = (provider or os.getenv("LLM_PROVIDER", "openai")).lower()
+    model = model or os.getenv("LLM_MODEL") or DEFAULT_MODELS.get(provider)
+
+    if provider == "openai":
+        from langchain_openai import ChatOpenAI
+
+        return ChatOpenAI(model=model, temperature=temperature)
+
+    if provider == "anthropic":
+        from langchain_anthropic import ChatAnthropic
+
+        return ChatAnthropic(model=model, temperature=temperature)
+
+    if provider == "gemini":
+        from langchain_google_genai import ChatGoogleGenerativeAI
+
+        return ChatGoogleGenerativeAI(model=model, temperature=temperature)
+
+    raise ValueError(f"Proveedor no soportado: {provider!r} (opciones: openai, anthropic, gemini)")
+
+
+def build_llm(model: str | None = None, provider: str | None = None):
     """Modelo con las herramientas "enlazadas" (bind_tools)."""
 
-    llm = ChatOpenAI(model=model, temperature=0)
+    llm = get_model(provider=provider, model=model, temperature=0)
     return llm.bind_tools(TOOLS)
 
 
@@ -76,6 +110,26 @@ def build_graph(checkpointer=None):
     return builder.compile(checkpointer=checkpointer)
 
 
+def _texto(content) -> str:
+    """Normaliza el contenido de un mensaje a texto plano.
+
+    Ojo: OpenAI y Anthropic devuelven un string, pero Gemini devuelve una LISTA de
+    bloques. Sin esto, la respuesta final sale como una lista de diccionarios.
+    """
+
+    if isinstance(content, str):
+        return content
+    if isinstance(content, list):
+        partes = []
+        for bloque in content:
+            if isinstance(bloque, str):
+                partes.append(bloque)
+            elif isinstance(bloque, dict) and bloque.get("type") == "text":
+                partes.append(bloque.get("text", ""))
+        return "".join(partes)
+    return str(content)
+
+
 async def run_agent(consulta: str, thread_id: str = "sesion-1", model: str = "gpt-4o-mini") -> dict:
     """Ejecuta el agente y devuelve la traza completa (para el .json de la entrega)."""
 
@@ -93,15 +147,16 @@ async def run_agent(consulta: str, thread_id: str = "sesion-1", model: str = "gp
         traza = []
         for mensaje in resultado["messages"]:
             entrada = {"tipo": mensaje.__class__.__name__}
-            if getattr(mensaje, "content", None):
-                entrada["contenido"] = mensaje.content
+            texto = _texto(getattr(mensaje, "content", "") or "")
+            if texto:
+                entrada["contenido"] = texto
             if getattr(mensaje, "tool_calls", None):
                 entrada["herramientas"] = [
                     {"nombre": c["name"], "argumentos": c["args"]} for c in mensaje.tool_calls
                 ]
             traza.append(entrada)
 
-        return {"respuesta": resultado["messages"][-1].content, "traza": traza}
+        return {"respuesta": _texto(resultado["messages"][-1].content), "traza": traza}
 
 
 if __name__ == "__main__":

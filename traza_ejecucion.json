@@ -1,0 +1,63 @@
+{
+  "respuesta": [
+    {
+      "type": "text",
+      "text": "A continuación, te detallo la información solicitada:\n\n1. **Estado de la orden ORD-1001:**\n   - **Estado:** En preparación\n   - **Cliente:** Acme\n   - **Total:** $1.250\n\n2. **Cálculo de prioridad:**\n   - Para una criticidad **alta** con **3 días de demora**, corresponde **Prioridad P1** (Escalar ahora, SLA de 4 horas).\n\n3. **Fecha de hoy:**\n   - **12 de septiembre de 2026** (17:35 UTC).",
+      "extras": {
+        "signature": "ErEBCq4BARFNMg9r94DGqFeL/ruExrhDBM4iP6Kl9S7h4iuBa6y6XHB4tE4pNTPjZYqi2RLBodFVireDDH7L3hZJoZ/20rygzK+d1yZR3cCXVf3rKnsQjZzmY0uaPpMKPlE9bK5r/2QmoBkHAS45pmJxg7k+5ewL8AqGUYZMLijm0NUO5BZlyQX025OHtLx5IjV+/dWUjsglwFfIUEemfhA5c8dMm1ShGU6/ZM3sIdWt1rp/"
+      }
+    }
+  ],
+  "traza": [
+    {
+      "tipo": "HumanMessage",
+      "contenido": "Necesito el estado de la orden ORD-1001 y, según su criticidad alta con 3 días de demora, qué prioridad le corresponde. Dame también la fecha de hoy."
+    },
+    {
+      "tipo": "AIMessage",
+      "herramientas": [
+        {
+          "nombre": "consultar_base_de_datos",
+          "argumentos": {
+            "identificador": "ORD-1001"
+          }
+        },
+        {
+          "nombre": "calcular_prioridad",
+          "argumentos": {
+            "criticidad": "alta",
+            "dias_demora": 3
+          }
+        },
+        {
+          "nombre": "fecha_actual",
+          "argumentos": {}
+        }
+      ]
+    },
+    {
+      "tipo": "ToolMessage",
+      "contenido": "{\"identificador\": \"ORD-1001\", \"estado\": \"en preparaci\\u00f3n\", \"cliente\": \"Acme\", \"total\": 1250.0}"
+    },
+    {
+      "tipo": "ToolMessage",
+      "contenido": "Prioridad P1 — escalar ahora, SLA 4 horas."
+    },
+    {
+      "tipo": "ToolMessage",
+      "contenido": "2026-09-12T17:35:36+00:00"
+    },
+    {
+      "tipo": "AIMessage",
+      "contenido": [
+        {
+          "type": "text",
+          "text": "A continuación, te detallo la información solicitada:\n\n1. **Estado de la orden ORD-1001:**\n   - **Estado:** En preparación\n   - **Cliente:** Acme\n   - **Total:** $1.250\n\n2. **Cálculo de prioridad:**\n   - Para una criticidad **alta** con **3 días de demora**, corresponde **Prioridad P1** (Escalar ahora, SLA de 4 horas).\n\n3. **Fecha de hoy:**\n   - **12 de septiembre de 2026** (17:35 UTC).",
+          "extras": {
+            "signature": "ErEBCq4BARFNMg9r94DGqFeL/ruExrhDBM4iP6Kl9S7h4iuBa6y6XHB4tE4pNTPjZYqi2RLBodFVireDDH7L3hZJoZ/20rygzK+d1yZR3cCXVf3rKnsQjZzmY0uaPpMKPlE9bK5r/2QmoBkHAS45pmJxg7k+5ewL8AqGUYZMLijm0NUO5BZlyQX025OHtLx5IjV+/dWUjsglwFfIUEemfhA5c8dMm1ShGU6/ZM3sIdWt1rp/"
+          }
+        }
+      ]
+    }
+  ]
+}
