@@ -30,7 +30,9 @@ La consulta de la demo se puede cambiar con la variable `CONSULTA`.
 
 | Variable | Descripción |
 |---|---|
-| `OPENAI_API_KEY` | Requerida para el modelo. |
+| `LLM_PROVIDER` | `openai`, `anthropic` o `gemini` (por defecto `openai`). |
+| `OPENAI_API_KEY` | Requerida si el proveedor es OpenAI. |
+| `GOOGLE_API_KEY` | Requerida si el proveedor es Gemini (free tier, sin tarjeta). |
 | `CONSULTA` | Opcional: consulta a ejecutar en la demo. |
 
 ## Ejemplo de traza (razonamiento multi-paso)
